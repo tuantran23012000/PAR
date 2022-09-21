@@ -1,0 +1,50 @@
+NAME: 'resnet_18.base.adam.v2.trainval.WF3.shorten' #'efficientnet_v2_s.base.adam.v2.trainval.WF3.attributes' #'resnet_101.base.adam.v2.trainval.WF3.shorten'
+#NAME: 'ViT_B_16_Weights.base.adam.v2.trainval.WF2.shorten'
+
+DATASET:
+  TYPE: 'pedes'
+  NAME: 'RAP2_ADDITION_ver1'
+  TRAIN_SPLIT: 'train'
+  VAL_SPLIT: 'val'
+  ZERO_SHOT: True
+  LABEL: 'eval'
+  HEIGHT: 256
+  WIDTH: 192
+
+RELOAD:
+  TYPE: False
+  NAME: 'backbone'
+  #PTH: 'ckpt_max_2022-08-22_15:39:07.pth'
+
+BACKBONE:
+  TYPE: 'resnet18' #'efficientnet_v2_s'
+
+CLASSIFIER:
+  NAME: 'linear'
+  POOLING: 'avg'
+  SCALE: 1
+  BN: False
+
+LOSS:
+  TYPE: 'bceloss'
+  LOSS_WEIGHT: [1]
+  SAMPLE_WEIGHT: 'weight'
+
+TRAIN:
+  CLIP_GRAD: True
+  BATCH_SIZE: 128
+  OPTIMIZER:
+    TYPE: 'adam'
+    WEIGHT_DECAY: 5e-4
+  LR_SCHEDULER:
+    TYPE: 'plateau'
+    LR_FT: 0.0001
+    LR_NEW: 0.0001
+  EMA:
+    ENABLE: False
+
+METRIC:
+  TYPE: 'pedestrian'
+
+VIS:
+  CAM: 'valid'
